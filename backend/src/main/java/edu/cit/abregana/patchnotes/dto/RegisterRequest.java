@@ -1,4 +1,4 @@
-package com.example.demo.dto;
+package edu.cit.abregana.patchnotes.dto;
 
 import lombok.Data;
 

@@ -1,13 +1,13 @@
-package com.example.demo;
+package edu.cit.abregana.patchnotes;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class DemoApplication {
+public class PatchNotesApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(DemoApplication.class, args);
+		SpringApplication.run(PatchNotesApplication.class, args);
 	}
 
 }

@@ -1,7 +1,7 @@
-package com.example.demo.controller;
+package edu.cit.abregana.patchnotes.controller;
 
-import com.example.demo.model.User;
-import com.example.demo.repository.UserRepository;
+import edu.cit.abregana.patchnotes.model.User;
+import edu.cit.abregana.patchnotes.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;

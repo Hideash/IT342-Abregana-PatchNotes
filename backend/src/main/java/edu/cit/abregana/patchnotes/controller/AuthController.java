@@ -1,9 +1,9 @@
-package com.example.demo.controller;
+package edu.cit.abregana.patchnotes.controller;
 
-import com.example.demo.dto.AuthResponse;
-import com.example.demo.dto.LoginRequest;
-import com.example.demo.dto.RegisterRequest;
-import com.example.demo.service.UserService;
+import edu.cit.abregana.patchnotes.dto.AuthResponse;
+import edu.cit.abregana.patchnotes.dto.LoginRequest;
+import edu.cit.abregana.patchnotes.dto.RegisterRequest;
+import edu.cit.abregana.patchnotes.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

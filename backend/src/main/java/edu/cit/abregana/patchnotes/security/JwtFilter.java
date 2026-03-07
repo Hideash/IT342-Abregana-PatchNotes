@@ -1,6 +1,6 @@
-package com.example.demo.security;
+package edu.cit.abregana.patchnotes.security;
 
-import com.example.demo.service.JwtService;
+import edu.cit.abregana.patchnotes.service.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

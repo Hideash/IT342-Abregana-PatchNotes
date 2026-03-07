@@ -133,7 +133,11 @@ export default function Register() {
       });
       localStorage.setItem("token", res.data.token);
       navigate("/dashboard");
-    } catch {
+    } catch (err) {
+      console.log("Error:", err);
+      console.log("Response:", err.response);
+      console.log("Status:", err.response?.status);
+      console.log("Data:", err.response?.data);
       setError("Registration failed. Email may already be in use.");
     }
   };

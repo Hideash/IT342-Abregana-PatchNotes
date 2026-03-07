@@ -1,4 +1,4 @@
-package com.example.demo.service;
+package edu.cit.abregana.patchnotes.service;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;

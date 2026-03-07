@@ -1,4 +1,4 @@
-package com.example.demo.security;
+package edu.cit.abregana.patchnotes.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

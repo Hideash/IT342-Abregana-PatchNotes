@@ -1,4 +1,4 @@
-package com.example.demo.model;
+package edu.cit.abregana.patchnotes.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
