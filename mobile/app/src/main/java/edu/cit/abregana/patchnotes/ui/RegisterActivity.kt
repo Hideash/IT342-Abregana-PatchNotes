@@ -51,7 +51,22 @@ class RegisterActivity : AppCompatActivity() {
             if (email.isEmpty() || username.isEmpty() || firstName.isEmpty() ||
                 lastName.isEmpty() || password.isEmpty() || ageStr.isEmpty() ||
                 gender == "Select Gender") {
+
                 tvError.text = "Please fill in all fields"
+                tvError.visibility = View.VISIBLE
+                return@setOnClickListener
+            }
+
+            if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                tvError.text = "Invalid email format"
+                tvError.visibility = View.VISIBLE
+                return@setOnClickListener
+            }
+
+            val age = ageStr.toIntOrNull()
+
+            if (age == null) {
+                tvError.text = "Enter a valid age"
                 tvError.visibility = View.VISIBLE
                 return@setOnClickListener
             }
@@ -59,27 +74,33 @@ class RegisterActivity : AppCompatActivity() {
             lifecycleScope.launch {
                 try {
                     val response = RetrofitClient.getClient(this@RegisterActivity)
-                        .register(RegisterRequest(
-                            email = email,
-                            password = password,
-                            username = username,
-                            firstName = firstName,
-                            lastName = lastName,
-                            age = ageStr.toInt(),
-                            gender = gender
-                        ))
+                        .register(
+                            RegisterRequest(
+                                email = email,
+                                password = password,
+                                username = username,
+                                firstName = firstName,
+                                lastName = lastName,
+                                age = age,
+                                gender = gender
+                            )
+                        )
+
                     if (response.isSuccessful && response.body() != null) {
                         val token = response.body()!!.token
                         val sharedPref = getSharedPreferences("prefs", Context.MODE_PRIVATE)
+
                         sharedPref.edit().putString("token", token).apply()
                         sharedPref.edit().putString("email", response.body()!!.email).apply()
                         sharedPref.edit().putString("username", response.body()!!.username).apply()
+
                         startActivity(Intent(this@RegisterActivity, DashboardActivity::class.java))
                         finish()
                     } else {
                         tvError.text = "Registration failed. Email may already be in use."
                         tvError.visibility = View.VISIBLE
                     }
+
                 } catch (e: Exception) {
                     tvError.text = "Connection error. Is the server running?"
                     tvError.visibility = View.VISIBLE

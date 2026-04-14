@@ -16,6 +16,18 @@ import kotlinx.coroutines.launch
 
 class LoginActivity : AppCompatActivity() {
 
+    override fun onStart() {
+        super.onStart()
+
+        val sharedPref = getSharedPreferences("prefs", MODE_PRIVATE)
+        val token = sharedPref.getString("token", null)
+
+        if (token != null) {
+            startActivity(Intent(this, DashboardActivity::class.java))
+            finish()
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
@@ -40,22 +52,33 @@ class LoginActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
+            if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                tvError.text = "Invalid email format"
+                tvError.visibility = View.VISIBLE
+                return@setOnClickListener
+            }
+
             lifecycleScope.launch {
                 try {
                     val response = RetrofitClient.getClient(this@LoginActivity)
                         .login(LoginRequest(email, password))
+
                     if (response.isSuccessful && response.body() != null) {
                         val token = response.body()!!.token
                         val sharedPref = getSharedPreferences("prefs", Context.MODE_PRIVATE)
+
                         sharedPref.edit().putString("token", token).apply()
                         sharedPref.edit().putString("email", response.body()!!.email).apply()
                         sharedPref.edit().putString("username", response.body()!!.username).apply()
+
                         startActivity(Intent(this@LoginActivity, DashboardActivity::class.java))
                         finish()
+
                     } else {
                         tvError.text = "Invalid email or password"
                         tvError.visibility = View.VISIBLE
                     }
+
                 } catch (e: Exception) {
                     tvError.text = "Connection error. Is the server running?"
                     tvError.visibility = View.VISIBLE
