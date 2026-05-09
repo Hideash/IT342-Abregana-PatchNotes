@@ -21,9 +21,33 @@ public class UserService implements UserDetailsService {
     private final JwtService jwtService;
 
     public AuthResponse register(RegisterRequest request) {
+
+        // Validate required fields
+        if (request.getEmail() == null || request.getEmail().isEmpty()) {
+            throw new RuntimeException("Email is required");
+        }
+        if (request.getPassword() == null || request.getPassword().length() < 8) {
+            throw new RuntimeException("Password must be at least 8 characters");
+        }
+        if (request.getUsername() == null || request.getUsername().isEmpty()) {
+            throw new RuntimeException("Username is required");
+        }
+        if (request.getFirstName() == null || request.getFirstName().isEmpty()) {
+            throw new RuntimeException("First name is required");
+        }
+        if (request.getLastName() == null || request.getLastName().isEmpty()) {
+            throw new RuntimeException("Last name is required");
+        }
+        // Validate email format
+        if (!request.getEmail().matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
+            throw new RuntimeException("Invalid email format");
+        }
+
+        // Check duplicate email
         if (userRepository.findByEmail(request.getEmail()).isPresent()) {
             throw new RuntimeException("Email already in use");
         }
+
         User user = new User();
         user.setEmail(request.getEmail());
         user.setPassword(passwordEncoder.encode(request.getPassword()));

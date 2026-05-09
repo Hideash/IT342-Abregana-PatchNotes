@@ -1,3 +1,33 @@
+/* * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  width: 100%;
+  min-height: 100vh;
+} */
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+:root {
+  /* Dark Tones */
+  --bg-darkest: #050505;
+  --bg-surface: #0f0f0f;
+  --bg-card: #161616;
+  
+  /* Your Custom Red Highlights */
+  --red-deep: #390007;   /* Use for subtle borders/shadows */
+  --red-mid: #4e0000;    /* Use for hover states */
+  --red-bright: #840000; /* Use for fonts, buttons, active highlights */
+  
+  /* Text Colors */
+  --text-primary: #ffffff;
+  --text-secondary: #b3b3b3;
+  --text-muted: #666666;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -7,4 +37,76 @@
 html, body, #root {
   width: 100%;
   min-height: 100vh;
+  background-color: var(--bg-darkest);
+  color: var(--text-primary);
+  font-family: 'Poppins', sans-serif;
+  scroll-behavior: smooth;
+}
+
+/* --- Global Typography Highlights --- */
+
+h1, h2, h3, h4 {
+  color: var(--red-bright);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+/* Links and Interactive Highlights */
+a {
+  color: var(--red-bright);
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+a:hover {
+  color: var(--text-primary);
+  text-shadow: 0 0 8px var(--red-mid);
+}
+
+/* --- Shared Component UI Styles --- */
+
+.card-accent {
+  background: var(--bg-card);
+  border: 1px solid var(--red-deep);
+  border-radius: 12px;
+  transition: border-color 0.3s ease;
+}
+
+.card-accent:hover {
+  border-color: var(--red-bright);
+}
+
+.btn-primary {
+  background-color: var(--red-bright);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.btn-primary:hover {
+  background-color: var(--red-mid);
+  box-shadow: 0 0 15px var(--red-deep);
+}
+
+/* Custom Scrollbar (Black & Red) */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-darkest);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--red-deep);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--red-bright);
 }

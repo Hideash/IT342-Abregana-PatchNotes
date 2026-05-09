@@ -117,6 +117,7 @@ const s = {
   link: { color: "#6366f1", textDecoration: "none" },
 };
 
+
 export default function Register() {
   const [form, setForm] = useState({
     email: "", password: "", username: "",
@@ -129,16 +130,16 @@ export default function Register() {
     try {
       const res = await api.post("/auth/register", {
         ...form,
-        age: parseInt(form.age)
+        age: parseInt(form.age) || 0
       });
       localStorage.setItem("token", res.data.token);
-      navigate("/dashboard");
+      navigate("/home");
     } catch (err) {
-      console.log("Error:", err);
-      console.log("Response:", err.response);
-      console.log("Status:", err.response?.status);
-      console.log("Data:", err.response?.data);
-      setError("Registration failed. Email may already be in use.");
+        console.log("Error:", err);
+        const errorMessage = err.response?.data?.error || 
+                            err.response?.data?.message || 
+                            "Registration failed. Please try again.";
+        setError(errorMessage);
     }
   };
 
@@ -154,6 +155,9 @@ export default function Register() {
 
         <label style={s.label}>Email</label>
         <input style={s.input} placeholder="you@email.com" onChange={set("email")} />
+
+        <label style={s.label}>Username</label>
+        <input style={s.input} placeholder="username" onChange={set("username")} />
 
         <div style={s.row}>
           <div>

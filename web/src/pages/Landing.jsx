@@ -157,6 +157,7 @@ const s = {
   },
 };
 
+
 export default function Landing() {
   const navigate = useNavigate();
 

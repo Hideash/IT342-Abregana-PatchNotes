@@ -4,10 +4,57 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>web</title>
+    <title>patchnotes</title>
+
+   
+    <!-- Google Fonts: Poppins (Regular 400 and Medium 500) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+      /* Global Reset to ensure Poppins is applied everywhere and bolding is removed */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Poppins', sans-serif !important;
+        font-weight: 400  ; /* Forces no bolding across the app */
+      }
+
+      body {
+        background-color: #000000;
+        color: #ffffff;
+      }
+
+      /* Keep specific elements uppercase where defined in your JS styles */
+      .uppercase {
+        text-transform: uppercase;
+      }
+
+      /* Custom Scrollbar for the Minimalist look */
+      ::-webkit-scrollbar {
+        width: 5px;
+      }
+
+      ::-webkit-scrollbar-track {
+        background: #000000;
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background: #1a1a1a;
+      }
+
+      ::-webkit-scrollbar-thumb:hover {
+        background: #ff3e3e;
+      }
+
+    </style>
   </head>
+
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
+
 </html>
