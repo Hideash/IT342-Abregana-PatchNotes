@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import api from "../api/axios";
-import Navbar from "../components/Navbar";
-import CreatePostModal from "../components/CreatePostModal";
-import CreatePatchModal from "../components/CreatePatchModal";
+import api from "../../api/axios";
+import Navbar from "../../components/Navbar";
+import CreatePostModal from "../../components/CreatePostModal";
+import CreatePatchModal from "../../components/CreatePatchModal";
  
 const s = {
   page: {

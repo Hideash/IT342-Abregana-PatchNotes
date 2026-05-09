@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import api from "../api/axios";
-import Navbar from "../components/Navbar";
+import api from "../../api/axios";
+import Navbar from "../../components/Navbar";
 
 const s = {
   page: {

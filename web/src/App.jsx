@@ -1,15 +1,15 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
+import Login from "./features/auth/Login";
+import Register from "./features/auth/Register";
 import Landing from "./pages/Landing";
-import Home from "./pages/Home";
-import Dashboard from "./pages/Dashboard";
-import Profile from "./pages/Profile";
+import Home from "./features/posts/Home";
+import Dashboard from "./features/patches/Dashboard";
+import Profile from "./features/users/Profile";
 import Forge from "./pages/Forge";
-import Signal from "./pages/Signal";
-import Discover from "./pages/Discover";
-import PatchPage from "./pages/PatchPage";
-import UserProfile from "./pages/UserProfile";
+import Signal from "./features/posts/Signal";
+import Discover from "./features/posts/Discover";
+import PatchPage from "./features/patches/PatchPage";
+import UserProfile from "./features/users/UserProfile";
 
 
 export default function App() {
