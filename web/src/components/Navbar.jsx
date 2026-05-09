@@ -74,37 +74,6 @@ const s = {
     cursor: "pointer",
   },
 
-  // iconBtn: {
-  //   background: "transparent",
-  //   border: "none",
-  //   color: "#888899",
-  //   width: "40px",
-  //   height: "40px",
-  //   borderRadius: "50%",
-  //   cursor: "pointer",
-  //   fontSize: "18px",
-  //   display: "flex",
-  //   alignItems: "center",
-  //   justifyContent: "center",
-  //   fontFamily: "'Courier New', monospace",
-  //   transition: "background 0.2s",
-  // },
-
-  // iconBtnActive: {
-  //   background: "var(--red-bright)",
-  //   border: "none",
-  //   //color: "#6366f1",
-  //   width: "40px",
-  //   height: "40px",
-  //   borderRadius: "50%",
-  //   cursor: "pointer",
-  //   fontSize: "18px",
-  //   display: "flex",
-  //   alignItems: "center",
-  //   justifyContent: "center",
-  //   fontFamily: "'Courier New', monospace",
-  // },
-
 };
 
 export default function Navbar({ searchValue, onSearchChange }) {
