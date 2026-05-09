@@ -1,13 +1,11 @@
-package edu.cit.abregana.patchnotes.controller;
+package edu.cit.abregana.patchnotes.features.auth;
 
-import edu.cit.abregana.patchnotes.dto.AuthResponse;
-import edu.cit.abregana.patchnotes.dto.LoginRequest;
-import edu.cit.abregana.patchnotes.dto.RegisterRequest;
-import edu.cit.abregana.patchnotes.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import edu.cit.abregana.patchnotes.features.users.UserService;
 
 @RestController
 @RequestMapping("/api/auth")

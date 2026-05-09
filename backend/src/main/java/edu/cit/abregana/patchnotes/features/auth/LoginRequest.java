@@ -1,4 +1,4 @@
-package edu.cit.abregana.patchnotes.dto;
+package edu.cit.abregana.patchnotes.features.auth;
 
 import lombok.Data;
 

@@ -1,4 +1,4 @@
-package edu.cit.abregana.patchnotes.repository;
+package edu.cit.abregana.patchnotes.features.patches;
 
 import edu.cit.abregana.patchnotes.model.Patch;
 import edu.cit.abregana.patchnotes.model.User;

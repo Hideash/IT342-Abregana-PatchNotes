@@ -1,4 +1,4 @@
-package com.example.demo;
+package edu.cit.abregana.patchnotes;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

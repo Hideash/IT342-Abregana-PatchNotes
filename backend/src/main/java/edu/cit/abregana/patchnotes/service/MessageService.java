@@ -2,10 +2,10 @@ package edu.cit.abregana.patchnotes.service;
 
 import edu.cit.abregana.patchnotes.dto.MessageRequest;
 import edu.cit.abregana.patchnotes.dto.MessageResponse;
+import edu.cit.abregana.patchnotes.features.users.UserRepository;
 import edu.cit.abregana.patchnotes.model.Message;
 import edu.cit.abregana.patchnotes.model.User;
 import edu.cit.abregana.patchnotes.repository.MessageRepository;
-import edu.cit.abregana.patchnotes.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

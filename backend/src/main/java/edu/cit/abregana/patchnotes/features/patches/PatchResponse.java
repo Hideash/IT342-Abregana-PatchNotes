@@ -17,7 +17,7 @@
 //     private LocalDateTime createdAt;
 // }
 
-package edu.cit.abregana.patchnotes.dto;
+package edu.cit.abregana.patchnotes.features.patches;
 
 import lombok.Data;
 import java.time.LocalDateTime;

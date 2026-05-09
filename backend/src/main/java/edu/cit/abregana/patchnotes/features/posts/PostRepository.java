@@ -1,4 +1,4 @@
-package edu.cit.abregana.patchnotes.repository;
+package edu.cit.abregana.patchnotes.features.posts;
 
 import edu.cit.abregana.patchnotes.model.Post;
 import org.springframework.data.jpa.repository.JpaRepository;

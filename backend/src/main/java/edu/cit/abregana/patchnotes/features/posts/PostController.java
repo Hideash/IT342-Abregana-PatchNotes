@@ -1,8 +1,7 @@
-package edu.cit.abregana.patchnotes.controller;
+package edu.cit.abregana.patchnotes.features.posts;
 
 import edu.cit.abregana.patchnotes.dto.PostRequest;
 import edu.cit.abregana.patchnotes.dto.PostResponse;
-import edu.cit.abregana.patchnotes.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

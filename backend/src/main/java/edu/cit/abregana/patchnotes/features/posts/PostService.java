@@ -82,19 +82,18 @@
 //     }
 // }
 
-package edu.cit.abregana.patchnotes.service;
+package edu.cit.abregana.patchnotes.features.posts;
 
 import edu.cit.abregana.patchnotes.dto.PostRequest;
 import edu.cit.abregana.patchnotes.dto.PostResponse;
+import edu.cit.abregana.patchnotes.features.patches.PatchRepository;
+import edu.cit.abregana.patchnotes.features.users.UserRepository;
 import edu.cit.abregana.patchnotes.model.Like;
 import edu.cit.abregana.patchnotes.model.Patch;
 import edu.cit.abregana.patchnotes.model.Post;
 import edu.cit.abregana.patchnotes.model.User;
 import edu.cit.abregana.patchnotes.repository.CommentRepository;
 import edu.cit.abregana.patchnotes.repository.LikeRepository;
-import edu.cit.abregana.patchnotes.repository.PatchRepository;
-import edu.cit.abregana.patchnotes.repository.PostRepository;
-import edu.cit.abregana.patchnotes.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

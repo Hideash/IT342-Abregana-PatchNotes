@@ -1,9 +1,8 @@
-package edu.cit.abregana.patchnotes.controller;
+package edu.cit.abregana.patchnotes.features.users;
 
 import edu.cit.abregana.patchnotes.dto.UpdateProfileRequest;
 import edu.cit.abregana.patchnotes.dto.UserResponse;
 import edu.cit.abregana.patchnotes.model.User;
-import edu.cit.abregana.patchnotes.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;

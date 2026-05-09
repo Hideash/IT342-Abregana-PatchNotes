@@ -1,10 +1,10 @@
-package edu.cit.abregana.patchnotes.service;
+package edu.cit.abregana.patchnotes.features.users;
 
-import edu.cit.abregana.patchnotes.dto.AuthResponse;
-import edu.cit.abregana.patchnotes.dto.LoginRequest;
-import edu.cit.abregana.patchnotes.dto.RegisterRequest;
+import edu.cit.abregana.patchnotes.features.auth.AuthResponse;
+import edu.cit.abregana.patchnotes.features.auth.LoginRequest;
+import edu.cit.abregana.patchnotes.features.auth.RegisterRequest;
 import edu.cit.abregana.patchnotes.model.User;
-import edu.cit.abregana.patchnotes.repository.UserRepository;
+import edu.cit.abregana.patchnotes.service.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
