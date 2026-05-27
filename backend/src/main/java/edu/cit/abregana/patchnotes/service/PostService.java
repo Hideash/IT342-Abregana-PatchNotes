@@ -3,10 +3,12 @@
 // import edu.cit.abregana.patchnotes.dto.PostRequest;
 // import edu.cit.abregana.patchnotes.dto.PostResponse;
 // import edu.cit.abregana.patchnotes.model.Like;
+// import edu.cit.abregana.patchnotes.model.Patch;
 // import edu.cit.abregana.patchnotes.model.Post;
 // import edu.cit.abregana.patchnotes.model.User;
 // import edu.cit.abregana.patchnotes.repository.CommentRepository;
 // import edu.cit.abregana.patchnotes.repository.LikeRepository;
+// import edu.cit.abregana.patchnotes.repository.PatchRepository;
 // import edu.cit.abregana.patchnotes.repository.PostRepository;
 // import edu.cit.abregana.patchnotes.repository.UserRepository;
 // import lombok.RequiredArgsConstructor;
@@ -24,6 +26,7 @@
 //     private final UserRepository userRepository;
 //     private final LikeRepository likeRepository;
 //     private final CommentRepository commentRepository;
+//     private final PatchRepository patchRepository;
 
 //     public PostResponse createPost(PostRequest request, String email) {
 //         User user = userRepository.findByEmail(email)
@@ -33,13 +36,20 @@
 //         post.setTitle(request.getTitle());
 //         post.setContent(request.getContent());
 //         post.setUser(user);
-//         postRepository.save(post);
 
+//         // Optional: attach to a patch if patchId is provided
+//         if (request.getPatchId() != null) {
+//             Patch patch = patchRepository.findById(request.getPatchId())
+//                     .orElseThrow(() -> new RuntimeException("Patch not found"));
+//             post.setPatch(patch);
+//         }
+
+//         postRepository.save(post);
 //         return mapToResponse(post, user);
 //     }
 
 //     public List<PostResponse> getAllPosts(String email) {
-//         User currentUser = userRepository.findByEmail(email).orElse(null);
+//         User currentUser = email != null ? userRepository.findByEmail(email).orElse(null) : null;
 //         return postRepository.findAllByOrderByCreatedAtDesc()
 //                 .stream()
 //                 .map(post -> mapToResponse(post, currentUser))
@@ -80,7 +90,7 @@
 //                         likeRepository.findByUserAndPost(currentUser, post).isPresent());
 //         return response;
 //     }
-// }
+// }   
 
 package edu.cit.abregana.patchnotes.service;
 
@@ -119,12 +129,14 @@ public class PostService {
         Post post = new Post();
         post.setTitle(request.getTitle());
         post.setContent(request.getContent());
+        post.setImageUrl(request.getImageUrl());
+        post.setVideoUrl(request.getVideoUrl());
+        post.setGameTag(request.getGameTag());
         post.setUser(user);
 
-        // Optional: attach to a patch if patchId is provided
         if (request.getPatchId() != null) {
             Patch patch = patchRepository.findById(request.getPatchId())
-                    .orElseThrow(() -> new RuntimeException("Patch not found"));
+                    .orElse(null);
             post.setPatch(patch);
         }
 
@@ -133,7 +145,7 @@ public class PostService {
     }
 
     public List<PostResponse> getAllPosts(String email) {
-        User currentUser = email != null ? userRepository.findByEmail(email).orElse(null) : null;
+        User currentUser = userRepository.findByEmail(email).orElse(null);
         return postRepository.findAllByOrderByCreatedAtDesc()
                 .stream()
                 .map(post -> mapToResponse(post, currentUser))
@@ -159,14 +171,28 @@ public class PostService {
         return mapToResponse(post, user);
     }
 
-    private PostResponse mapToResponse(Post post, User currentUser) {
+    public PostResponse getPostById(Long postId, String email) {
+        User currentUser = userRepository.findByEmail(email).orElse(null);
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new RuntimeException("Post not found"));
+        return mapToResponse(post, currentUser);
+    }
+
+    public PostResponse mapToResponse(Post post, User currentUser) {
         PostResponse response = new PostResponse();
         response.setId(post.getId());
         response.setTitle(post.getTitle());
         response.setContent(post.getContent());
+        response.setImageUrl(post.getImageUrl());
+        response.setVideoUrl(post.getVideoUrl());
+        response.setGameTag(post.getGameTag());
         response.setUsername(post.getUser().getUsername());
         response.setEmail(post.getUser().getEmail());
         response.setCreatedAt(post.getCreatedAt());
+        if (post.getPatch() != null) {
+            response.setPatchId(post.getPatch().getId());
+            response.setPatchName(post.getPatch().getName());
+        }
         response.setLikeCount(likeRepository.countByPost(post));
         response.setCommentCount(commentRepository.countByPost(post));
         response.setLikedByCurrentUser(
@@ -174,4 +200,4 @@ public class PostService {
                         likeRepository.findByUserAndPost(currentUser, post).isPresent());
         return response;
     }
-}   
+}

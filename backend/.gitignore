@@ -1,3 +1,4 @@
+application-local.properties
 node_modules/
 backend/node_modules/
 web/node_modules/

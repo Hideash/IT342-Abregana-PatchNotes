@@ -16,21 +16,16 @@ import kotlinx.coroutines.launch
 
 class LoginActivity : AppCompatActivity() {
 
-    override fun onStart() {
-        super.onStart()
-
-        val sharedPref = getSharedPreferences("prefs", MODE_PRIVATE)
-        val token = sharedPref.getString("token", null)
-
-        if (token != null) {
-            startActivity(Intent(this, DashboardActivity::class.java))
-            finish()
-        }
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+
+        val prefs = getSharedPreferences("prefs", MODE_PRIVATE)
+        if (prefs.getString("token", null) != null) {
+            startActivity(Intent(this, MainActivity::class.java))
+            finish()
+            return
+        }
 
         val etEmail = findViewById<EditText>(R.id.etEmail)
         val etPassword = findViewById<EditText>(R.id.etPassword)
@@ -47,16 +42,14 @@ class LoginActivity : AppCompatActivity() {
             val password = etPassword.text.toString().trim()
 
             if (email.isEmpty() || password.isEmpty()) {
-                tvError.text = "Please fill in all fields"
+                tvError.text = "Please fill in all fields."
                 tvError.visibility = View.VISIBLE
                 return@setOnClickListener
             }
 
-            if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                tvError.text = "Invalid email format"
-                tvError.visibility = View.VISIBLE
-                return@setOnClickListener
-            }
+            btnLogin.isEnabled = false
+            btnLogin.text = "Logging in..."
+            tvError.visibility = View.GONE
 
             lifecycleScope.launch {
                 try {
@@ -64,24 +57,25 @@ class LoginActivity : AppCompatActivity() {
                         .login(LoginRequest(email, password))
 
                     if (response.isSuccessful && response.body() != null) {
-                        val token = response.body()!!.token
-                        val sharedPref = getSharedPreferences("prefs", Context.MODE_PRIVATE)
-
-                        sharedPref.edit().putString("token", token).apply()
-                        sharedPref.edit().putString("email", response.body()!!.email).apply()
-                        sharedPref.edit().putString("username", response.body()!!.username).apply()
-
-                        startActivity(Intent(this@LoginActivity, DashboardActivity::class.java))
+                        val body = response.body()!!
+                        prefs.edit()
+                            .putString("token", body.token)
+                            .putString("email", body.email)
+                            .putString("username", body.username)
+                            .apply()
+                        startActivity(Intent(this@LoginActivity, MainActivity::class.java))
                         finish()
-
                     } else {
-                        tvError.text = "Invalid email or password"
+                        tvError.text = "Invalid email or password."
                         tvError.visibility = View.VISIBLE
+                        btnLogin.isEnabled = true
+                        btnLogin.text = "Login"
                     }
-
                 } catch (e: Exception) {
                     tvError.text = "Connection error. Is the server running?"
                     tvError.visibility = View.VISIBLE
+                    btnLogin.isEnabled = true
+                    btnLogin.text = "Login"
                 }
             }
         }

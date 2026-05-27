@@ -134,275 +134,96 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import api from "../api/axios";
 import Navbar from "../components/Navbar";
+import LeftSidebar from "../components/LeftSidebar";
 import CreatePostModal from "../components/CreatePostModal";
 
 const s = {
-  page: {
-    minHeight: "100vh",
-    background: "#000000",
-    fontFamily: "var(--font-poppins)",
-    color: "#ffffff",
-  },
-  banner: {
-    height: "160px",
-    background: "linear-gradient(135deg, #1a0000, #ff3e3e22)",
-    position: "relative",
-  },
-  headerCard: {
-    background: "#0a0a0a",
-    border: "1px solid #1a1a1a",
-    borderBottom: "none",
+  page: { minHeight: "100vh", background: "#000000", fontFamily: "'Poppins', sans-serif", color: "#ffffff" },
+  layout: { display: "flex", alignItems: "flex-start", minHeight: "calc(100vh - 56px)" },
+  main: { flex: 1, minWidth: 0 },
+  bannerArea: {
+    height: "80px",
+    background: "linear-gradient(135deg, #180008, #ff3e3e11)",
+    borderBottom: "1px solid #1a1a1a",
   },
   headerContent: {
-    maxWidth: "900px",
-    margin: "0 auto",
-    padding: "0 32px 24px 32px",
-    display: "flex",
-    alignItems: "flex-end",
-    gap: "20px",
-    marginTop: "-50px",
+    maxWidth: "860px", margin: "0 auto",
+    padding: "0 24px 16px", display: "flex",
+    alignItems: "flex-end", gap: "16px", marginTop: "-28px",
   },
   patchIcon: {
-    width: "100px",
-    height: "100px",
-    background: "#000000",
-    border: "4px solid #0a0a0a",
-    borderRadius: "12px",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    fontSize: "44px",
-    flexShrink: 0,
+    width: "60px", height: "60px", background: "#000000",
+    border: "3px solid #000000", borderRadius: "12px",
+    display: "flex", alignItems: "center", justifyContent: "center",
+    fontSize: "28px", flexShrink: 0,
   },
-  titleArea: {
-    flex: 1,
-    paddingBottom: "4px",
-  },
-  patchName: {
-    color: "#ffffff",
-    fontSize: "28px",
-    fontWeight: "700",
-    margin: "0 0 4px 0",
-  },
-  patchHandle: {
-    color: "#444444",
-    fontSize: "13px",
-    margin: "0 0 8px 0",
-  },
-  patchDesc: {
-    color: "#888888",
-    fontSize: "13px",
-    margin: "0 0 12px 0",
-    lineHeight: "1.5",
-  },
-  metaRow: {
-    display: "flex",
-    gap: "16px",
-    alignItems: "center",
-    flexWrap: "wrap",
-  },
+  titleArea: { flex: 1, paddingBottom: "4px" },
+  patchName: { color: "#ffffff", fontSize: "22px", fontWeight: "700", margin: "0 0 2px 0" },
+  patchHandle: { color: "#444444", fontSize: "12px", margin: "0 0 6px 0" },
+  metaRow: { display: "flex", gap: "8px", flexWrap: "wrap" },
   metaTag: {
-    background: "#1a1a1a",
-    color: "#555555",
-    padding: "4px 12px",
-    borderRadius: "20px",
-    fontSize: "11px",
-    letterSpacing: "1px",
+    background: "#0a0a0a", color: "#555555",
+    padding: "2px 10px", borderRadius: "20px", fontSize: "11px",
+    border: "1px solid #1a1a1a",
   },
-  actionArea: {
-    display: "flex",
-    gap: "10px",
-    paddingBottom: "4px",
-    flexShrink: 0,
-  },
+  actionArea: { display: "flex", gap: "8px", paddingBottom: "4px", flexShrink: 0 },
   joinBtn: {
-    background: "#ff3e3e",
-    color: "#ffffff",
-    border: "none",
-    padding: "10px 24px",
-    borderRadius: "8px",
-    fontWeight: "700",
-    cursor: "pointer",
-    fontSize: "13px",
-    fontFamily: "var(--font-poppins)",
+    background: "#59000a", color: "#ffffff", border: "none",
+    padding: "8px 20px", borderRadius: "20px", fontWeight: "700",
+    cursor: "pointer", fontSize: "13px", fontFamily: "'Poppins', sans-serif",
   },
   joinedBtn: {
-    background: "transparent",
-    color: "#555555",
-    border: "1px solid #1a1a1a",
-    padding: "10px 24px",
-    borderRadius: "8px",
-    cursor: "pointer",
-    fontSize: "13px",
-    fontFamily: "var(--font-poppins)",
+    background: "transparent", color: "#555555",
+    border: "1px solid #1a1a1a", padding: "8px 20px",
+    borderRadius: "20px", cursor: "pointer", fontSize: "13px",
+    fontFamily: "'Poppins', sans-serif",
   },
   createBtn: {
-    background: "#1a1a1a",
-    color: "#ffffff",
-    border: "1px solid #1a1a1a",
-    padding: "10px 20px",
-    borderRadius: "8px",
-    cursor: "pointer",
-    fontSize: "13px",
-    fontFamily: "var(--font-poppins)",
+    background: "#0a0a0a", color: "#ffffff",
+    border: "1px solid #1a1a1a", padding: "8px 16px",
+    borderRadius: "20px", cursor: "pointer", fontSize: "13px",
+    fontFamily: "'Poppins', sans-serif",
   },
-  divider: {
-    border: "none",
-    borderTop: "1px solid #1a1a1a",
-    margin: "0",
-  },
-  container: {
-    maxWidth: "900px",
-    margin: "0 auto",
-    padding: "24px 32px",
-    display: "grid",
-    gridTemplateColumns: "1fr 300px",
-    gap: "24px",
-  },
-  feed: {
-    display: "flex",
-    flexDirection: "column",
-    gap: "16px",
+  divider: { border: "none", borderTop: "1px solid #1a1a1a", margin: "0" },
+  contentArea: { maxWidth: "860px", margin: "0 auto", padding: "20px 24px", display: "grid", gridTemplateColumns: "1fr 260px", gap: "20px" },
+  feed: { display: "flex", flexDirection: "column", gap: "10px" },
+  searchBar: {
+    width: "100%", background: "#0a0a0a", border: "1px solid #1a1a1a",
+    borderRadius: "24px", padding: "9px 16px", color: "#ffffff",
+    fontSize: "13px", fontFamily: "'Poppins', sans-serif",
+    outline: "none", boxSizing: "border-box", marginBottom: "12px",
   },
   postCard: {
-    background: "#0a0a0a",
-    border: "1px solid #1a1a1a",
-    borderRadius: "12px",
-    padding: "20px",
+    background: "#0a0a0a", border: "1px solid #1a1a1a",
+    borderRadius: "8px", padding: "16px", cursor: "pointer",
+    transition: "border-color 0.15s",
   },
-  postHeader: {
-    display: "flex",
-    alignItems: "center",
-    gap: "12px",
-    marginBottom: "12px",
-  },
+  postHeader: { display: "flex", alignItems: "center", gap: "10px", marginBottom: "10px" },
   postAvatar: {
-    width: "36px",
-    height: "36px",
-    background: "#ff3e3e",
-    borderRadius: "50%",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    fontSize: "14px",
-    fontWeight: "700",
-    color: "#fff",
-    flexShrink: 0,
+    width: "32px", height: "32px", background: "#59000a",
+    borderRadius: "50%", display: "flex", alignItems: "center",
+    justifyContent: "center", fontSize: "13px", fontWeight: "700",
+    color: "#fff", flexShrink: 0,
   },
-  postUsername: {
-    color: "#ffffff",
-    fontSize: "13px",
-    fontWeight: "600",
-    margin: 0,
-    cursor: "pointer",
-  },
-  postTime: {
-    color: "#444444",
-    fontSize: "11px",
-    margin: 0,
-  },
-  postTitle: {
-    color: "#ffffff",
-    fontSize: "18px",
-    fontWeight: "600",
-    margin: "0 0 8px 0",
-  },
-  postContent: {
-    color: "#888888",
-    fontSize: "14px",
-    lineHeight: "1.7",
-    margin: "0 0 16px 0",
-  },
-  postActions: {
-    display: "flex",
-    gap: "12px",
-    borderTop: "1px solid #1a1a1a",
-    paddingTop: "12px",
-  },
+  postUsername: { color: "#ffffff", fontSize: "13px", fontWeight: "600", margin: 0, cursor: "pointer" },
+  postTime: { color: "#444444", fontSize: "11px", margin: 0 },
+  postTitle: { color: "#ffffff", fontSize: "16px", fontWeight: "600", margin: "0 0 6px 0" },
+  postContent: { color: "#888888", fontSize: "13px", lineHeight: "1.6", margin: "0 0 12px 0" },
+  postImage: { width: "100%", borderRadius: "8px", marginBottom: "10px", maxHeight: "300px", objectFit: "cover" },
+  postActions: { display: "flex", gap: "4px", borderTop: "1px solid #1a1a1a", paddingTop: "10px" },
   actionBtn: {
-    background: "transparent",
-    border: "none",
-    color: "#555555",
-    padding: "4px 8px",
-    borderRadius: "6px",
-    cursor: "pointer",
-    fontSize: "13px",
-    fontFamily: "var(--font-poppins)",
-    display: "flex",
-    alignItems: "center",
-    gap: "6px",
+    background: "transparent", border: "none", color: "#555555",
+    padding: "4px 10px", borderRadius: "20px", cursor: "pointer",
+    fontSize: "12px", fontFamily: "'Poppins', sans-serif",
+    display: "flex", alignItems: "center", gap: "4px",
   },
-  sidebar: {
-    display: "flex",
-    flexDirection: "column",
-    gap: "16px",
-  },
-  sideCard: {
-    background: "#0a0a0a",
-    border: "1px solid #1a1a1a",
-    borderRadius: "12px",
-    padding: "20px",
-  },
-  sideTitle: {
-    color: "#444444",
-    fontSize: "11px",
-    letterSpacing: "2px",
-    textTransform: "uppercase",
-    margin: "0 0 12px 0",
-    fontWeight: "600",
-  },
-  memberItem: {
-    display: "flex",
-    alignItems: "center",
-    gap: "10px",
-    padding: "8px 0",
-    borderBottom: "1px solid #111111",
-    cursor: "pointer",
-  },
-  memberAvatar: {
-    width: "30px",
-    height: "30px",
-    background: "#ff3e3e",
-    borderRadius: "50%",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    fontSize: "12px",
-    fontWeight: "700",
-    color: "#fff",
-  },
-  memberName: {
-    color: "#888888",
-    fontSize: "13px",
-    margin: 0,
-  },
-  empty: {
-    textAlign: "center",
-    color: "#333333",
-    padding: "40px 0",
-    fontSize: "13px",
-  },
-  loading: {
-    textAlign: "center",
-    color: "#333333",
-    padding: "40px 0",
-    fontSize: "12px",
-    letterSpacing: "2px",
-  },
-  backBtn: {
-    background: "transparent",
-    border: "none",
-    color: "#555555",
-    cursor: "pointer",
-    fontSize: "13px",
-    fontFamily: "var(--font-poppins)",
-    padding: "16px 32px 0",
-    display: "flex",
-    alignItems: "center",
-    gap: "8px",
-    maxWidth: "900px",
-    margin: "0 auto",
-  },
+  sidebar: { display: "flex", flexDirection: "column", gap: "14px" },
+  sideCard: { background: "#0a0a0a", border: "1px solid #1a1a1a", borderRadius: "12px", padding: "16px" },
+  sideTitle: { color: "#444444", fontSize: "10px", letterSpacing: "2px", textTransform: "uppercase", margin: "0 0 12px 0", fontWeight: "600" },
+  sideText: { color: "#555555", fontSize: "13px", margin: "0 0 8px 0", lineHeight: "1.5" },
+  sideMeta: { color: "#444444", fontSize: "12px", margin: "0 0 4px 0" },
+  empty: { textAlign: "center", color: "#333333", padding: "40px 0", fontSize: "13px" },
+  loading: { textAlign: "center", color: "#333333", padding: "40px 0", fontSize: "12px", letterSpacing: "2px" },
 };
 
 export default function PatchPage() {
@@ -410,13 +231,27 @@ export default function PatchPage() {
   const navigate = useNavigate();
   const [patch, setPatch] = useState(null);
   const [posts, setPosts] = useState([]);
+  const [filteredPosts, setFilteredPosts] = useState([]);
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showCreatePost, setShowCreatePost] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+
+  useEffect(() => { loadData(); }, [patchId]);
 
   useEffect(() => {
-    loadData();
-  }, [patchId]);
+    if (!searchQuery.trim()) {
+      setFilteredPosts(posts);
+    } else {
+      const q = searchQuery.toLowerCase();
+      setFilteredPosts(posts.filter(p =>
+        p.title?.toLowerCase().includes(q) ||
+        p.content?.toLowerCase().includes(q) ||
+        p.username?.toLowerCase().includes(q) ||
+        p.email?.toLowerCase().includes(q)
+      ));
+    }
+  }, [searchQuery, posts]);
 
   const loadData = async () => {
     try {
@@ -429,45 +264,46 @@ export default function PatchPage() {
       setUser(userRes.data);
       setPatch(patchRes.data);
       setPosts(postsRes.data);
+      setFilteredPosts(postsRes.data);
     } catch (err) {
-      console.error("Failed to load patch:", err);
       navigate("/home");
-    } finally {
-      setLoading(false);
-    }
+    } finally { setLoading(false); }
   };
 
   const handleJoin = async () => {
-    try {
-      const res = await api.post(`/patches/${patchId}/join`);
-      setPatch(res.data);
-    } catch (err) {
-      console.error("Error joining patch:", err);
-    }
+    const res = await api.post(`/patches/${patchId}/join`);
+    setPatch(res.data);
   };
 
-  const formatDate = (dateStr) => {
-    const date = new Date(dateStr);
-    return date.toLocaleDateString("en-US", {
-      month: "short", day: "numeric", year: "numeric",
-    });
-  };
+  const formatDate = (dateStr) => new Date(dateStr).toLocaleDateString("en-US", {
+    month: "short", day: "numeric", year: "numeric"
+  });
 
   if (loading) return (
     <div style={s.page}>
       <Navbar />
-      <div style={s.loading}>LOADING PATCH...</div>
+      <div style={{ display: "flex" }}>
+        <LeftSidebar />
+        <div style={s.loading}>LOADING PATCH...</div>
+      </div>
     </div>
   );
 
   if (!patch) return (
     <div style={s.page}>
       <Navbar />
-      <div style={s.loading}>PATCH NOT FOUND</div>
+      <div style={{ display: "flex" }}>
+        <LeftSidebar />
+        <div style={s.loading}>PATCH NOT FOUND</div>
+      </div>
     </div>
   );
 
-  const canPost = patch.member || patch.privacy === "public";
+  // const canPost = patch.member || patch.privacy === "public";
+  // Public: anyone can post
+  // Restricted: only members can post
+  // Private: only members can post
+  const canPost = patch.privacy === "public" || patch.member;
 
   return (
     <div style={s.page}>
@@ -478,129 +314,111 @@ export default function PatchPage() {
           user={user}
           onClose={() => setShowCreatePost(false)}
           onPostCreated={loadData}
+          defaultPatchId={patchId}
         />
       )}
 
-      {/* Back Button */}
-      <button style={s.backBtn} onClick={() => navigate(-1)}>
-        ← Back
-      </button>
+      <div style={s.layout}>
+        <LeftSidebar />
+        <div style={s.main}>
+          {/* Banner */}
+          <div style={s.bannerArea} />
 
-      {/* Banner */}
-      <div style={s.headerCard}>
-        <div style={s.banner} />
-        <div style={s.headerContent}>
-          <div style={s.patchIcon}>{patch.icon}</div>
-          <div style={s.titleArea}>
-            <h1 style={s.patchName}>{patch.name}</h1>
-            <p style={s.patchHandle}>
-              p/{patch.name?.toLowerCase().replace(/\s/g, "")}
-            </p>
-            <p style={s.patchDesc}>
-              {patch.description || "No description provided."}
-            </p>
-            <div style={s.metaRow}>
-              <span style={s.metaTag}>{patch.topic}</span>
-              <span style={s.metaTag}>
-                {patch.privacy === "public" ? "🌍 Public"
-                  : patch.privacy === "restricted" ? "🔒 Restricted"
-                  : "🔐 Private"}
-              </span>
-              <span style={s.metaTag}>
-                {patch.memberCount} {patch.memberCount === 1 ? "member" : "members"}
-              </span>
-              <span style={s.metaTag}>by {patch.createdBy}</span>
+          {/* Header */}
+          <div style={s.headerContent}>
+            <div style={s.patchIcon}>{patch.icon}</div>
+            <div style={s.titleArea}>
+              <h1 style={s.patchName}>{patch.name}</h1>
+              <p style={s.patchHandle}>p/{patch.name?.toLowerCase().replace(/\s/g, "")}</p>
+              <div style={s.metaRow}>
+                <span style={s.metaTag}>{patch.topic}</span>
+                <span style={s.metaTag}>
+                  {patch.privacy === "public" ? "🌍 Public"
+                    : patch.privacy === "restricted" ? "🔒 Restricted"
+                    : "🔐 Private"}
+                </span>
+                <span style={s.metaTag}>{patch.memberCount} members</span>
+              </div>
             </div>
-          </div>
-          <div style={s.actionArea}>
-            <button
-              style={patch.member ? s.joinedBtn : s.joinBtn}
-              onClick={handleJoin}
-            >
-              {patch.member ? "✓ Joined" : "+ Join Patch"}
-            </button>
-            {canPost && (
-              <button style={s.createBtn} onClick={() => setShowCreatePost(true)}>
-                + Post
+            <div style={s.actionArea}>
+              <button
+                style={patch.member ? s.joinedBtn : s.joinBtn}
+                onClick={handleJoin}
+              >
+                {patch.member ? "✓ Joined" : "+ Join Patch"}
               </button>
-            )}
-          </div>
-        </div>
-        <hr style={s.divider} />
-      </div>
-
-      {/* Content */}
-      <div style={s.container}>
-
-        {/* Posts Feed */}
-        <div style={s.feed}>
-          {posts.length === 0 ? (
-            <div style={s.empty}>
-              <div style={{ fontSize: "40px", marginBottom: "16px" }}>📋</div>
-              <p>No posts in this patch yet.</p>
               {canPost && (
-                <p style={{ marginTop: "8px" }}>
-                  Be the first to post!
-                </p>
+                <button style={s.createBtn} onClick={() => setShowCreatePost(true)}>
+                  + Post
+                </button>
               )}
             </div>
-          ) : (
-            posts.map(post => (
-              <div key={post.id} style={s.postCard}>
-                <div style={s.postHeader}>
-                  <div style={s.postAvatar}>
-                    {post.username?.charAt(0).toUpperCase()}
-                  </div>
-                  <div>
-                    <p
-                      style={s.postUsername}
-                      onClick={() => navigate(`/user/${post.email}`)}
-                    >
-                      {post.username}
-                    </p>
-                    <p style={s.postTime}>{formatDate(post.createdAt)}</p>
-                  </div>
+          </div>
+
+          <hr style={s.divider} />
+
+          {/* Content */}
+          <div style={s.contentArea}>
+            <div style={s.feed}>
+              <input
+                style={s.searchBar}
+                placeholder="Search posts or users in this patch..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+
+              {filteredPosts.length === 0 ? (
+                <div style={s.empty}>
+                  <div style={{ fontSize: "36px", marginBottom: "12px" }}>📋</div>
+                  <p>{searchQuery ? "No posts match your search." : "No posts in this patch yet."}</p>
                 </div>
-                {post.title && <p style={s.postTitle}>{post.title}</p>}
-                <p style={s.postContent}>{post.content}</p>
-                <div style={s.postActions}>
-                  <button style={s.actionBtn}>♥ {post.likeCount || 0}</button>
-                  <button style={s.actionBtn}>💬 {post.commentCount || 0}</button>
-                </div>
+              ) : (
+                filteredPosts.map(post => (
+                  <div
+                    key={post.id}
+                    style={s.postCard}
+                    onMouseEnter={e => { e.currentTarget.style.borderColor = "#ff3e3e33"; }}
+                    onMouseLeave={e => { e.currentTarget.style.borderColor = "#1a1a1a"; }}
+                    onClick={() => navigate(`/post/${post.id}`)}
+                  >
+                    <div style={s.postHeader}>
+                      <div style={s.postAvatar}>{post.username?.charAt(0).toUpperCase()}</div>
+                      <div>
+                        <p style={s.postUsername} onClick={(e) => { e.stopPropagation(); navigate(`/user/${post.email}`); }}>
+                          {post.username}
+                        </p>
+                        <p style={s.postTime}>{formatDate(post.createdAt)}</p>
+                      </div>
+                    </div>
+                    {post.title && <p style={s.postTitle}>{post.title}</p>}
+                    {post.imageUrl && <img src={post.imageUrl} alt="post" style={s.postImage} />}
+                    <p style={s.postContent}>{post.content}</p>
+                    <div style={s.postActions}>
+                      <button style={s.actionBtn} onClick={(e) => e.stopPropagation()}>♥ {post.likeCount || 0}</button>
+                      <button style={s.actionBtn} onClick={(e) => e.stopPropagation()}>💬 {post.commentCount || 0}</button>
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+
+            {/* Sidebar */}
+            <div style={s.sidebar}>
+              <div style={s.sideCard}>
+                <p style={s.sideTitle}>About</p>
+                <p style={s.sideText}>{patch.description || "No description provided."}</p>
+                <p style={s.sideMeta}>🛡️ Created by <span style={{ color: "#888888" }}>{patch.createdBy}</span></p>
+                <p style={s.sideMeta}>👥 {patch.memberCount} {patch.memberCount === 1 ? "member" : "members"}</p>
               </div>
-            ))
-          )}
-        </div>
-
-        {/* Sidebar */}
-        <div style={s.sidebar}>
-          <div style={s.sideCard}>
-            <p style={s.sideTitle}>About this Patch</p>
-            <p style={{ color: "#555555", fontSize: "13px", margin: "0 0 12px 0" }}>
-              {patch.description || "No description provided."}
-            </p>
-            <p style={{ color: "#444444", fontSize: "12px", margin: "0 0 4px 0" }}>
-              🛡️ Created by <span style={{ color: "#888888" }}>{patch.createdBy}</span>
-            </p>
-            <p style={{ color: "#444444", fontSize: "12px", margin: 0 }}>
-              👥 {patch.memberCount} {patch.memberCount === 1 ? "member" : "members"}
-            </p>
-          </div>
-
-          <div style={s.sideCard}>
-            <p style={s.sideTitle}>Rules</p>
-            <p style={{ color: "#333333", fontSize: "12px", margin: "0 0 8px 0" }}>
-              1. Be respectful to all members
-            </p>
-            <p style={{ color: "#333333", fontSize: "12px", margin: "0 0 8px 0" }}>
-              2. Stay on topic
-            </p>
-            <p style={{ color: "#333333", fontSize: "12px", margin: 0 }}>
-              3. No spam or self-promotion
-            </p>
+              <div style={s.sideCard}>
+                <p style={s.sideTitle}>Community Rules</p>
+                <p style={{ color: "#333333", fontSize: "12px", margin: "0 0 6px 0" }}>1. Be respectful</p>
+                <p style={{ color: "#333333", fontSize: "12px", margin: "0 0 6px 0" }}>2. Stay on topic</p>
+                <p style={{ color: "#333333", fontSize: "12px", margin: 0 }}>3. No spam</p>
+              </div>
+            </div>
           </div>
         </div>
-
       </div>
     </div>
   );

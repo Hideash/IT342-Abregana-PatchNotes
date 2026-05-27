@@ -1,34 +1,35 @@
-/* * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --font-poppins: 'Poppins', sans-serif;
+  --bg-main: #0a0a0a;
+  --bg-surface: #111111;
+  --bg-card: #141414;
+  --accent: #59000a;
+  --accent-hover: #7A0010;
+  --accent-light: #9B0014;
+  --border: #1e1e1e;
+  --text-primary: #ffffff;
+  --text-secondary: #888888;
+  --text-muted: #444444;
 }
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
 html, body, #root {
   width: 100%;
   min-height: 100vh;
-} */
-
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-
-:root {
-  /* Dark Tones */
-  --bg-darkest: #050505;
-  --bg-surface: #0f0f0f;
-  --bg-card: #161616;
-  
-  /* Your Custom Red Highlights */
-  --red-deep: #390007;   /* Use for subtle borders/shadows */
-  --red-mid: #4e0000;    /* Use for hover states */
-  --red-bright: #840000; /* Use for fonts, buttons, active highlights */
-  
-  /* Text Colors */
-  --text-primary: #ffffff;
-  --text-secondary: #b3b3b3;
-  --text-muted: #666666;
+  background: #0a0a0a;
+  color: #ffffff;
+  font-family: 'Poppins', sans-serif;
 }
 
-* {
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: #0a0a0a; }
+::-webkit-scrollbar-thumb { background: #1e1e1e; }
+::-webkit-scrollbar-thumb:hover { background: #59000a; }
+
+/* * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -43,15 +44,12 @@ html, body, #root {
   scroll-behavior: smooth;
 }
 
-/* --- Global Typography Highlights --- */
-
 h1, h2, h3, h4 {
   color: var(--red-bright);
   font-weight: 600;
   letter-spacing: -0.02em;
 }
 
-/* Links and Interactive Highlights */
 a {
   color: var(--red-bright);
   text-decoration: none;
@@ -62,8 +60,6 @@ a:hover {
   color: var(--text-primary);
   text-shadow: 0 0 8px var(--red-mid);
 }
-
-/* --- Shared Component UI Styles --- */
 
 .card-accent {
   background: var(--bg-card);
@@ -93,7 +89,6 @@ a:hover {
   box-shadow: 0 0 15px var(--red-deep);
 }
 
-/* Custom Scrollbar (Black & Red) */
 ::-webkit-scrollbar {
   width: 8px;
 }
@@ -109,4 +104,4 @@ a:hover {
 
 ::-webkit-scrollbar-thumb:hover {
   background: var(--red-bright);
-}
+} */

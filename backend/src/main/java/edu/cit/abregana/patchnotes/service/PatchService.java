@@ -6,8 +6,6 @@
 // import edu.cit.abregana.patchnotes.model.Patch;
 // import edu.cit.abregana.patchnotes.model.Post;
 // import edu.cit.abregana.patchnotes.model.User;
-// import edu.cit.abregana.patchnotes.repository.CommentRepository;
-// import edu.cit.abregana.patchnotes.repository.LikeRepository;
 // import edu.cit.abregana.patchnotes.repository.PatchRepository;
 // import edu.cit.abregana.patchnotes.repository.PostRepository;
 // import edu.cit.abregana.patchnotes.repository.UserRepository;
@@ -25,8 +23,6 @@
 //     private final PostRepository postRepository;
 //     private final PatchRepository patchRepository;
 //     private final UserRepository userRepository;
-//     private final LikeRepository likeRepository;
-//     private final CommentRepository commentRepository;
 
 //     public PatchResponse createPatch(PatchRequest request, String email) {
 //         User user = userRepository.findByEmail(email)
@@ -62,11 +58,14 @@
 //                 .collect(Collectors.toList());
 //     }
 
+//     /**
+//      * Returns patches sorted by member count descending (top 5 by default).
+//      * The frontend calls /api/patches/trending and slices as needed.
+//      */
 //     public List<PatchResponse> getTrendingPatches(String email) {
 //         User user = userRepository.findByEmail(email).orElse(null);
 //         return patchRepository.findAllByOrderByMemberCountDesc()
 //                 .stream()
-//                 .limit(5)
 //                 .map(patch -> mapToResponse(patch, user))
 //                 .collect(Collectors.toList());
 //     }
@@ -113,10 +112,10 @@
 //             res.setUsername(post.getUser().getUsername());
 //             res.setEmail(post.getUser().getEmail());
 //             res.setCreatedAt(post.getCreatedAt());
-//             res.setLikeCount(likeRepository.countByPost(post));
-//             res.setCommentCount(commentRepository.countByPost(post));
+//             res.setLikeCount(0);
+//             res.setCommentCount(0);
 //             return res;
-//         }).collect(Collectors.toList());
+//         }).toList();
 //     }
 
 //     private PatchResponse mapToResponse(Patch patch, User currentUser) {
@@ -143,6 +142,8 @@ import edu.cit.abregana.patchnotes.dto.PostResponse;
 import edu.cit.abregana.patchnotes.model.Patch;
 import edu.cit.abregana.patchnotes.model.Post;
 import edu.cit.abregana.patchnotes.model.User;
+import edu.cit.abregana.patchnotes.repository.CommentRepository;
+import edu.cit.abregana.patchnotes.repository.LikeRepository;
 import edu.cit.abregana.patchnotes.repository.PatchRepository;
 import edu.cit.abregana.patchnotes.repository.PostRepository;
 import edu.cit.abregana.patchnotes.repository.UserRepository;
@@ -160,6 +161,8 @@ public class PatchService {
     private final PostRepository postRepository;
     private final PatchRepository patchRepository;
     private final UserRepository userRepository;
+    private final LikeRepository likeRepository;
+    private final CommentRepository commentRepository;
 
     public PatchResponse createPatch(PatchRequest request, String email) {
         User user = userRepository.findByEmail(email)
@@ -195,14 +198,11 @@ public class PatchService {
                 .collect(Collectors.toList());
     }
 
-    /**
-     * Returns patches sorted by member count descending (top 5 by default).
-     * The frontend calls /api/patches/trending and slices as needed.
-     */
     public List<PatchResponse> getTrendingPatches(String email) {
         User user = userRepository.findByEmail(email).orElse(null);
         return patchRepository.findAllByOrderByMemberCountDesc()
                 .stream()
+                .limit(5)
                 .map(patch -> mapToResponse(patch, user))
                 .collect(Collectors.toList());
     }
@@ -227,32 +227,99 @@ public class PatchService {
         User user = userRepository.findByEmail(email).orElse(null);
         return patchRepository.findByNameContainingIgnoreCase(query)
                 .stream()
+                .filter(patch -> {
+                    if (patch.getPrivacy().equals("private")) {
+                        return user != null && patch.getMembers().contains(user);
+                    }
+                    return true;
+                })
                 .map(patch -> mapToResponse(patch, user))
                 .collect(Collectors.toList());
     }
+
+    // public PatchResponse getPatchDetails(Long patchId, String email) {
+    //     Patch patch = patchRepository.findById(patchId)
+    //             .orElseThrow(() -> new RuntimeException("Patch not found"));
+    //     User user = userRepository.findByEmail(email)
+    //             .orElseThrow(() -> new RuntimeException("User not found"));
+
+    //     if (patch.getPrivacy().equals("private") && !patch.getMembers().contains(user)) {
+    //         throw new RuntimeException("This patch is private");
+    //     }
+
+    //     return mapToResponse(patch, user);
+    // }
+
+    // public List<PostResponse> getPostsByPatch(Long patchId, String email) {
+    //     Patch patch = patchRepository.findById(patchId)
+    //             .orElseThrow(() -> new RuntimeException("Patch not found"));
+    //     User user = userRepository.findByEmail(email)
+    //             .orElseThrow(() -> new RuntimeException("User not found"));
+
+    //     if (patch.getPrivacy().equals("private") && !patch.getMembers().contains(user)) {
+    //         throw new RuntimeException("This patch is private");
+    //     }
+
+    //     List<Post> posts = postRepository.findByPatch_IdOrderByCreatedAtDesc(patchId);
+    //     return posts.stream().map(post -> {
+    //         PostResponse res = new PostResponse();
+    //         res.setId(post.getId());
+    //         res.setTitle(post.getTitle());
+    //         res.setContent(post.getContent());
+    //         res.setImageUrl(post.getImageUrl());
+    //         res.setVideoUrl(post.getVideoUrl());
+    //         res.setGameTag(post.getGameTag());
+    //         res.setUsername(post.getUser().getUsername());
+    //         res.setEmail(post.getUser().getEmail());
+    //         res.setCreatedAt(post.getCreatedAt());
+    //         res.setLikeCount(likeRepository.countByPost(post));
+    //         res.setCommentCount(commentRepository.countByPost(post));
+    //         return res;
+    //     }).collect(Collectors.toList());
+    // }
 
     public PatchResponse getPatchDetails(Long patchId, String email) {
         Patch patch = patchRepository.findById(patchId)
                 .orElseThrow(() -> new RuntimeException("Patch not found"));
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));
+
+        // Only private patches are completely hidden from non-members
+        if (patch.getPrivacy().equals("private") && !patch.getMembers().contains(user)) {
+            throw new RuntimeException("This patch is private");
+        }
+
         return mapToResponse(patch, user);
     }
 
-    public List<PostResponse> getPostsByPatch(Long patchId) {
+    public List<PostResponse> getPostsByPatch(Long patchId, String email) {
+        Patch patch = patchRepository.findById(patchId)
+                .orElseThrow(() -> new RuntimeException("Patch not found"));
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        // Private: members only
+        if (patch.getPrivacy().equals("private") && !patch.getMembers().contains(user)) {
+            throw new RuntimeException("This patch is private");
+        }
+
+        // Restricted and Public: anyone can view posts
         List<Post> posts = postRepository.findByPatch_IdOrderByCreatedAtDesc(patchId);
         return posts.stream().map(post -> {
             PostResponse res = new PostResponse();
             res.setId(post.getId());
             res.setTitle(post.getTitle());
             res.setContent(post.getContent());
+            res.setImageUrl(post.getImageUrl());
+            res.setVideoUrl(post.getVideoUrl());
+            res.setGameTag(post.getGameTag());
             res.setUsername(post.getUser().getUsername());
             res.setEmail(post.getUser().getEmail());
             res.setCreatedAt(post.getCreatedAt());
-            res.setLikeCount(0);
-            res.setCommentCount(0);
+            res.setLikeCount(likeRepository.countByPost(post));
+            res.setCommentCount(commentRepository.countByPost(post));
             return res;
-        }).toList();
+        }).collect(Collectors.toList());
     }
 
     private PatchResponse mapToResponse(Patch patch, User currentUser) {
